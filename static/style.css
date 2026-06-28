@@ -1,0 +1,16 @@
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color:#f5f7fb;
+}
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    transition:all 0.3s ease;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 24px rgba(0,0,0,0.15);
+}

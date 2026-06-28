@@ -2,7 +2,14 @@
 <html>
 <head>
     <title>Study Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+     
+     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="bg-light">
 
@@ -24,7 +31,7 @@
         <div class="card text-center h-100 shadow-sm">
             <div class="card-body">
                 <h5>📚 Total Subjects</h5>
-                <h2class="fw-bold">{{ total_subjects }}</h2>
+                <h2 id="totalSubjects">0</h2>
             </div>
         </div>
     </div>
@@ -33,7 +40,7 @@
         <div class="card text-center h-100 shadow-sm">
             <div class="card-body">
                 <h5>⏱️ Total Hours Studied</h5>
-                <h2class="fw-bold">{{ total_hours }}</h2>
+                <h2 id="totalHours">0</h2>
             </div>
         </div>
     </div>
@@ -42,7 +49,7 @@
         <div class="card text-center h-100 shadow-sm">
             <div class="card-body">
                 <h5>📝 Total Study Logs</h5>
-                <h2class="fw-bold">{{ total_logs }}</h2>
+                <h2 id="totalLogs">0</h2>
             </div>
         </div>
     </div>
@@ -51,40 +58,54 @@
         <div class="card text-center h-100 shadow-sm">
             <div class="card-body">
                 <h5>🏆 Top Subject</h5>
-                <h2class="fw-bold">{{ top_subject }}</h2>
+                <h2 id="topSubject" class="fw-bold">None</h2>
             </div>
         </div>
     </div>
+    <div class="card mt-4">
+    
+</div>
 
 </div>
 
-        <form method="POST" action="/add">
+        <div class="card mt-4">
+    <div class="card-body">
+        <h4 class="mb-3 text-center">➕ Add Study Log</h4>
 
-            <div class="mb-3">
-                <label class="form-label">Subject</label>
-                <input
-                    type="text"
-                    name="subject"
-                    class="form-control"
-                    required
-                >
+        <form id="studyForm">
+            <div class="row">
+
+                <div class="col-md-5">
+                    <input
+                        type="text"
+                        id="subject"
+                        class="form-control"
+                        placeholder="Enter Subject"
+                        required>
+                </div>
+
+                <div class="col-md-5">
+                    <input
+                        type="number"
+                        id="hours"
+                        class="form-control"
+                        placeholder="Enter Hours"
+                        required>
+                </div>
+
+                <div class="col-md-2 d-grid">
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+                        Add Log
+                    </button>
+                </div>
+
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Hours Studied</label>
-                <input
-                    type="number"
-                    name="hours"
-                    class="form-control"
-                    required
-                >
-            </div>
-
-            <button class="btn btn-primary">
-                Add Study Log
-            </button>
-
         </form>
+
+    </div>
+</div>
 
     </div>
 
@@ -92,39 +113,151 @@
 
         <h2>📚 Study Logs</h2>
 
-        <table class="table table-striped mt-3">
+        <table class="table">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Hours</th>
+        </tr>
+    </thead>
 
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Subject</th>
-                    <th>Hours</th>
-                </tr>
-            </thead>
+    <tbody id="logsTable">
 
-            <tbody>
+    </tbody>
 
-                {% for row in logs %}
-                <tr>
-                    <td>{{ row[0] }}</td>
-                    <td>{{ row[1] }}</td>
-                    <td>{{ row[2] }}</td>
-                </tr>
-                {% endfor %}
-
-            </tbody>
-
-        </table>
+</table>
 
     </div>
     <form action="/clear" method="POST">
    <button
-    class="btn btn-danger mb-3"
-    onclick="return confirm('Are you sure you want to clear all logs?')">
+    id="clearBtn"
+    class="btn btn-danger mb-3">
     🗑️ Clear Logs
 </button>
 </form>
 </div>
+<script>
+let studyChart;
+let logs =
+    JSON.parse(
+        localStorage.getItem("studyLogs")
+    ) || [];
+
+displayLogs();
+updateCards();
+
+document
+.getElementById("studyForm")
+.addEventListener("submit", function(e)
+{
+    e.preventDefault();
+
+    let subject =
+        document.getElementById("subject").value;
+
+    let hours =
+        document.getElementById("hours").value;
+
+    logs.push({
+        subject: subject,
+        hours: hours
+    });
+
+    localStorage.setItem(
+        "studyLogs",
+        JSON.stringify(logs)
+    );
+
+    displayLogs();
+    updateCards();
+
+    this.reset();
+});
+
+function displayLogs()
+{
+    let table =
+        document.getElementById("logsTable");
+
+    table.innerHTML = "";
+
+    logs.forEach(function(log)
+    {
+        table.innerHTML += `
+        <tr>
+            <td>${log.subject}</td>
+            <td>${log.hours}</td>
+        </tr>
+        `;
+    });
+}
+function updateCards() {
+
+    document.getElementById("totalLogs").innerText =
+        logs.length;
+
+    let totalHours = 0;
+    let subjects = [];
+    let subjectHours = {};
+
+    logs.forEach(function(log){
+
+        totalHours += Number(log.hours);
+
+        if (!subjects.includes(log.subject)) {
+            subjects.push(log.subject);
+        }
+
+        if (subjectHours[log.subject]) {
+            subjectHours[log.subject] += Number(log.hours);
+        }
+        else {
+            subjectHours[log.subject] = Number(log.hours);
+        }
+    });
+
+    document.getElementById("totalHours").innerText =
+        totalHours;
+
+    document.getElementById("totalSubjects").innerText =
+        subjects.length;
+
+    let topSubject = "No Data";
+    let maxHours = 0;
+
+    for (let subject in subjectHours) {
+
+        if (subjectHours[subject] > maxHours) {
+            maxHours = subjectHours[subject];
+            topSubject = subject;
+        }
+    }
+
+    document.getElementById("topSubject").innerText =
+        topSubject;
+}
+
+document.getElementById("clearBtn")
+.addEventListener("click", function(){
+
+    let confirmClear =
+        confirm(
+            "Are you sure you want to clear all logs?"
+        );
+
+    if (confirmClear){
+
+        logs = [];
+
+        localStorage.removeItem("studyLogs");
+
+        displayLogs();
+        updateCards();
+    }
+});
+
+
+</script>
 
 </body>
 </html>
