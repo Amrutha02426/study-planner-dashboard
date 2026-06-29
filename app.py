@@ -31,9 +31,10 @@ def home():
     """)
     top_subject = cursor.fetchone()
     if top_subject:
-        top_subject = top_subject[0]
+        top_subject = top_subject[0].capitalize()
     else:
         top_subject = "No data available"
+    
 
     conn.close()
     print("Subjects:", total_subjects)

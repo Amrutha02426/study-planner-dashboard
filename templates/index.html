@@ -11,97 +11,137 @@
      
      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="bg-light">
+<body >
 
 <div class="container mt-5">
 
     <div class="card shadow p-4">
 
-        <h1 class="text-center mb-4">
-            🚀 Study Planner
-        </h1>
+        <h1 class="fw-bold mb-2">
+    📚 Study Planner
+</h1>
 
-        <a href="/analytics" class="btn btn-success mb-3">
-            📊 View Analytics
-        </a>
+<p class="text-muted fs-5">
+    Track your study sessions and visualize your progress.
+</p>
+<a href="/analytics" class="btn btn-info w-100 text-white fw-semibold">
+    📊 View Analytics
+</a>
 
     <div class="row mt-4">
 
-    <div class="col-md-3">
-        <div class="card text-center h-100 shadow-sm">
-            <div class="card-body">
-                <h5>📚 Total Subjects</h5>
-                <h2 id="totalSubjects">0</h2>
+    <div class="col-6 col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+
+                <div class="fs-3 mb-2">📚</div>
+
+                <h6 class="text-muted">
+                    Total Subjects
+                </h6>
+
+                <h1 id="totalSubjects"
+                 class="display-5 fw-bold text-info">
+                    0
+                </h1>
+
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card text-center h-100 shadow-sm">
-            <div class="card-body">
-                <h5>⏱️ Total Hours Studied</h5>
-                <h2 id="totalHours">0</h2>
+    <div class="col-6 col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+
+                <div class="fs-3 mb-2">⏱️</div>
+
+                <h6 class="text-muted">
+                    Total Hours
+                </h6>
+
+                <h1 id="totalHours"
+                    class="display-5 fw-bold text-info">
+                    0
+                </h1>
+
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card text-center h-100 shadow-sm">
-            <div class="card-body">
-                <h5>📝 Total Study Logs</h5>
-                <h2 id="totalLogs">0</h2>
+    <div class="col-6 col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+
+                <div class="fs-3 mb-2">📝</div>
+
+                <h6 class="text-muted">
+                    Total Study Logs
+                </h6>
+
+                <h1 id="totalLogs"
+                    class="display-5 fw-bold text-info">
+                    0
+                </h1>
+
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card text-center h-100 shadow-sm">
-            <div class="card-body">
-                <h5>🏆 Top Subject</h5>
-                <h2 id="topSubject" class="fw-bold">None</h2>
+    <div class="col-6 col-md-3">
+        <div class="card">
+            <div class="card-body text-center">
+
+                <div class="fs-3 mb-2">🏆</div>
+
+                <h6 class="text-muted">
+                    Top Subject
+                </h6>
+
+                <h1 id="topSubject"
+                    class="display-5 fw-bold text-info"
+                    No Data
+                </h1>
+
             </div>
         </div>
     </div>
-    <div class="card mt-4">
-    
+
 </div>
 
-</div>
+
 
         <div class="card mt-4">
     <div class="card-body">
         <h4 class="mb-3 text-center">➕ Add Study Log</h4>
 
         <form id="studyForm">
-            <div class="row">
+            <div class="row g-3">
 
-                <div class="col-md-5">
-                    <input
-                        type="text"
-                        id="subject"
-                        class="form-control"
-                        placeholder="Enter Subject"
-                        required>
-                </div>
+    <div class="col-12 col-md-5">
+        <input
+            type="text"
+            id="subject"
+            class="form-control"
+            placeholder="Enter Subject">
+    </div>
 
-                <div class="col-md-5">
-                    <input
-                        type="number"
-                        id="hours"
-                        class="form-control"
-                        placeholder="Enter Hours"
-                        required>
-                </div>
+    <div class="col-12 col-md-5">
+        <input
+            type="number"
+            id="hours"
+            class="form-control"
+            placeholder="Enter Hours">
+    </div>
 
-                <div class="col-md-2 d-grid">
-                    <button
-                        type="submit"
-                        class="btn btn-success">
-                        Add Log
-                    </button>
-                </div>
+    <div class="col-12 col-md-2 d-grid">
+        <button
+            class="btn btn-info"
+            type="submit">
+            Add Log
+        </button>
+    </div>
 
-            </div>
+</div>
         </form>
 
     </div>
@@ -112,9 +152,9 @@
     <div class="card shadow mt-4 p-4">
 
         <h2>📚 Study Logs</h2>
-
-        <table class="table">
-    <thead>
+        <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+    <thead class="display-5 fw-bold text-info">
         <tr>
             <th>Subject</th>
             <th>Hours</th>
@@ -126,15 +166,19 @@
     </tbody>
 
 </table>
+</div>
 
-    </div>
     <form action="/clear" method="POST">
    <button
     id="clearBtn"
     class="btn btn-danger mb-3">
     🗑️ Clear Logs
 </button>
+
+    </div>
+
 </form>
+</div>
 </div>
 <script>
 let studyChart;
@@ -233,8 +277,11 @@ function updateCards() {
         }
     }
 
-    document.getElementById("topSubject").innerText =
-        topSubject;
+    if (topSubject !== "No Data") {
+    topSubject = topSubject.toUpperCase();
+}
+
+document.getElementById("topSubject").textContent = topSubject;
 }
 
 document.getElementById("clearBtn")
