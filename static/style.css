@@ -7,7 +7,9 @@ body{
 thead{
     background:#E0F2FE;
 }
-
+td{
+    padding:12px !important;
+}
 .card{
 
     border:none;
@@ -27,7 +29,7 @@ thead{
     border-top:30px solid #7DD3FC;
 }
 .card-body{
-    padding:25px;
+    padding: 18px;
 }
 
 .card:hover{
@@ -59,6 +61,7 @@ thead{
     background:white;
     border:2px solid #7DD3FC;
     color:#1F2937;
+    height:52px;
 }
 
 .form-control::placeholder{
@@ -146,5 +149,8 @@ h5{
     .btn{
         width:100%;
     }
+    .chart-container{
+        height:250px;
 
+}
 }
