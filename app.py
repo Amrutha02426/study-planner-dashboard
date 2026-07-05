@@ -138,7 +138,7 @@ def ai_advice():
 
     {study_data}
 
-    Analyze the study pattern and respond with exactly 5 bullet points.
+    Analyze the study pattern and respond with exactly 3 bullet points.
 
     Rules:
     - Do NOT use markdown.
@@ -152,10 +152,7 @@ def ai_advice():
     • Subject needing more attention
     • One practical improvement
    
-    Respond with exactly 3 bullet points.
-
-     Then on a new line write:
-
+    Then on a new line write:
     <MOTIVATION>
     your motivational sentence here
     </MOTIVATION>
