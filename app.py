@@ -1,7 +1,13 @@
 import matplotlib.pyplot as plt
-from flask import Flask, render_template, request,redirect,url_for
+from flask import Flask, render_template, request,jsonify,redirect,url_for
 import sqlite3
+import os
+from dotenv import load_dotenv
+import google.generativeai as genai
 
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-2.5-flash")
 app = Flask(__name__)
 
 @app.route("/")
@@ -31,7 +37,7 @@ def home():
     """)
     top_subject = cursor.fetchone()
     if top_subject:
-        top_subject = top_subject[0].capitalize()
+        top_subject = top_subject[0]
     else:
         top_subject = "No data available"
     
@@ -99,6 +105,7 @@ def analytics():
         data=data,
         chart="chart.png"
     )
+
 @app.route("/clear", methods=["POST"])
 def clear_logs():
     conn = sqlite3.connect("database.db")
@@ -110,9 +117,69 @@ def clear_logs():
     conn.close()
 
     return redirect(url_for("home"))
+@app.route("/ai-advice", methods=["POST"])
+def ai_advice():
+
+    data = request.json
+
+    logs = data.get("logs", [])
+
+    if not logs:
+        return jsonify({"advice": "No study logs available."})
+
+    study_data = ""
+
+    for log in logs:
+        study_data += f"{log['subject']} - {log['hours']} hours\n"
+    prompt = f"""
+    You are an experienced academic study mentor.
+
+    The student has studied:
+
+    {study_data}
+
+    Analyze the study pattern and respond with exactly 5 bullet points.
+
+    Rules:
+    - Do NOT use markdown.
+    - Do NOT use **, #, or any formatting symbols.
+    - Start every point with the bullet character •
+    - Keep the total response under 120 words.
+    - Use simple, friendly English.
+
+    Include:
+    • Strongest subject
+    • Subject needing more attention
+    • One practical improvement
+   
+    Respond with exactly 3 bullet points.
+
+     Then on a new line write:
+
+    <MOTIVATION>
+    your motivational sentence here
+    </MOTIVATION>
+
+    
+    """
+
+    response = model.generate_content(prompt)
+
+    return jsonify({
+        "advice": response.text
+    })
+@app.route("/test-ai")
+def test_ai():
+
+    response = model.generate_content(
+        "Give one motivational study quote in one sentence."
+    )
+
+    return response.text
     
 
 import os
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

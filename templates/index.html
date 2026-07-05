@@ -27,7 +27,31 @@
 <a href="/analytics" class="btn btn-info w-100 text-white fw-semibold">
     📊 View Analytics
 </a>
+<div class="text-center mt-3">
 
+    <button
+        id="aiBtn"
+        class="btn btn-warning">
+
+        ✨ Get AI Study Advice
+
+    </button>
+
+</div>
+<div
+    class="card mt-4"
+    id="aiCard"
+    style="display:none;">
+
+    <div class="card-body">
+
+        <h4>🤖 AI Study Advisor</h4>
+
+        <p id="aiAdvice"></p>
+
+    </div>
+
+</div>
     <div class="row mt-4">
 
     <div class="col-6 col-md-3">
@@ -302,7 +326,61 @@ document.getElementById("clearBtn")
         updateCards();
     }
 });
+document.getElementById("aiBtn")
+.addEventListener("click", function () {
+document.getElementById("aiCard").style.display = "block";
 
+document.getElementById("aiAdvice").innerHTML =
+    "⏳ AI is analyzing your study pattern...";
+    fetch("/ai-advice", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            logs: logs
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        document.getElementById("aiCard").style.display = "block";
+
+    let advice = data.advice
+        .replace(/\*\*/g, "")
+        .replace(/#/g, "");
+
+    let lines = advice.split("\n").filter(line => line.trim() !== "");
+
+    let lastLine = lines.pop();
+
+    let formattedAdvice = lines.join("<br><br>");
+
+    formattedAdvice += `
+        <div class="motivation-line">
+            ${lastLine}
+        </div>
+    `;
+
+    document.getElementById("aiAdvice").innerHTML = formattedAdvice;
+        })
+    
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Unable to get AI advice.");
+
+    });
+
+});
 
 </script>
 
