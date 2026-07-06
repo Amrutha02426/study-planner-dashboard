@@ -8,10 +8,7 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 
 load_dotenv()
-print("API KEY FOUND:", os.getenv("GEMINI_API_KEY") is not None)
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-for model in genai.list_models():
-    print(model.name)
 model = genai.GenerativeModel("gemini-2.5-flash")
 app = Flask(__name__)
 
@@ -124,32 +121,52 @@ def clear_logs():
     return redirect(url_for("home"))
 @app.route("/ai-advice", methods=["POST"])
 def ai_advice():
-    try:
-        data = request.json
-        logs = data.get("logs", [])
 
-        if not logs:
-            return jsonify({"advice": "No study logs available."})
+    data = request.json
 
-        study_data = ""
-        for log in logs:
-            study_data += f"{log['subject']} - {log['hours']} hours\n"
+    logs = data.get("logs", [])
 
-        prompt = f"""
-        {study_data}
-        Give simple study advice.
-        """
+    if not logs:
+        return jsonify({"advice": "No study logs available."})
 
-        response = model.generate_content(prompt)
+    study_data = ""
 
-        return jsonify({"advice": response.text})
+    for log in logs:
+        study_data += f"{log['subject']} - {log['hours']} hours\n"
+    prompt = f"""
+    You are an experienced academic study mentor.
 
-    except Exception as e:
-        import traceback
-        traceback.print_exc()   # <-- prints full error
-        return jsonify({
-            "error": str(e)
-        }), 500
+    The student has studied:
+
+    {study_data}
+
+    Analyze the study pattern and respond with exactly 3 bullet points.
+
+    Rules:
+    - Do NOT use markdown.
+    - Do NOT use **, #, or any formatting symbols.
+    - Start every point with the bullet character •
+    - Keep the total response under 120 words.
+    - Use simple, friendly English.
+
+    Include:
+    • Strongest subject
+    • Subject needing more attention
+    • One practical improvement
+   
+    Then on a new line write:
+    <MOTIVATION>
+    your motivational sentence here
+    </MOTIVATION>
+
+    
+    """
+
+    response = model.generate_content(prompt)
+
+    return jsonify({"advice": response.text})
+
+    
 @app.route("/test-ai")
 def test_ai():
 

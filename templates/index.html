@@ -346,20 +346,22 @@ document.getElementById("aiAdvice").innerHTML =
 
     })
 
-   .then(async response => {
+    .then(async response => {
     const data = await response.json();
 
     console.log(data);
 
     if (!response.ok) {
         alert(data.error);
-        return;
+        return null;
     }
 
     return data;
 })
 
-    .then(data => {
+.then(data => {
+
+    if (!data) return;
 
         document.getElementById("aiCard").style.display = "block";
 
