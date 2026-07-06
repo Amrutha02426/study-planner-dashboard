@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from flask import Flask, render_template, request,jsonify,redirect,url_for
 import sqlite3
@@ -6,8 +8,9 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 
 load_dotenv()
+print("API KEY FOUND:", os.getenv("GEMINI_API_KEY") is not None)
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-2.5-flash")
+model = genai.GenerativeModel("gemini-2.0-flash")
 app = Flask(__name__)
 
 @app.route("/")
