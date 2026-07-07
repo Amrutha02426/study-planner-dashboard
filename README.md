@@ -1,50 +1,76 @@
-﻿ 📚 Study Planner
+🤖 AI-Powered Study Planner
 
-A modern and responsive **Study Planner Web Application built using Flask, JavaScript, Bootstrap, and Chart.js to help students organize study sessions, track study hours, and visualize their learning progress through interactive analytics.
+An intelligent study planner built with Flask, SQLite, JavaScript, and Google Gemini AI that helps students track their study sessions, visualize progress, and receive personalized AI-powered study recommendations.
+
+🚀 Live Demo
+
+🔗 Live Website:https://study-planner-dashboard.onrender.com
+
+📚 Study Management
+- Add and manage study logs
+- Track subjects and study hours
+- Automatically save data using SQLite
+
+📊 Analytics Dashboard
+- Total Subjects
+- Total Study Hours
+- Total Study Logs
+- Top Studied Subject
+- Study Hours Chart
+- Subject-wise Analytics
+
+ 🤖 AI Study Advisor
+Powered by Google Gemini AI
+
+The AI analyzes your study pattern and provides:
+- 📈 Strongest subject
+- 📉 Subject needing more attention
+- 💡 Personalized study improvement tips
+- 🚀 Motivational message
+
+🎨 Responsive UI
+- Modern card-based interface
+- Mobile-friendly design
+- Interactive animations
+- Clean dashboard
+
+ 🛠 Tech Stack
+Frontend
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript
+
+Backend
+- Flask
+- SQLite
+
+AI
+- Google Gemini API
+
+Data Visualization
+- Matplotlib
+
+Deployment
+- Render
+
+📸 Screenshots
+
+Dashboard
+
+*(Add dashboard screenshot here)*
 
 ---
 
-## 🚀 Live Demo
+Analytics Dashboard
 
-🔗 Live Website: https://study-planner-dashboard-1.onrender.com
-
----
-
-🏠 Home Page
-
-<img width="913" height="621" alt="home" src="https://github.com/user-attachments/assets/5197c0c9-6c27-44b6-9d2c-37b543d712fd" />
-
-📊 Analytics Page
-
-<img width="1350" height="595" alt="analytics" src="https://github.com/user-attachments/assets/2579d13d-ae5f-4428-9748-c3705bdff82f" />
-
-✨ Features
-
-- 📚 Add study logs
-- ⏱️ Track total study hours
-- 📝 View total study logs
-- 🏆 Display the top studied subject
-- 📊 Interactive analytics using Chart.js
-- 📱 Fully responsive for desktop and mobile
-- 🎨 Modern UI with Bootstrap and custom CSS
-- 💾 Browser Local Storage support
-- ⚡ Fast and lightweight
+*(Add analytics screenshot here)*
 
 ---
- 🛠️ Tech Stack
 
-| Technology | Purpose |
-|------------|----------|
-| Python | Backend |
-| Flask | Web Framework |
-| HTML5 | Structure |
-| CSS3 | Styling |
-| Bootstrap 5 | Responsive UI |
-| JavaScript | Client-side Logic |
-| Chart.js | Analytics Charts |
-| Local Storage | Data Storage |
-| Git & GitHub | Version Control |
-| Render | Deployment |
+ AI Study Advisor
+
+*(Add AI recommendation screenshot here)*
 
 ---
 
@@ -64,16 +90,14 @@ Study-Planner/
 │
 └── README.md
 
-
----
-
  📖 How to Use
 
 1. Enter the subject name.
 2. Enter the number of study hours.
-3. Click **Add Log**.
+3. Click Add Log.
 4. View your study logs.
-5. Click **View Analytics** to see your progress visually.
+5. Click View Analytics to see your progress visually.
+6. Click AI Study advise to get advise from ai
 
 
  🎯 Future Improvements
@@ -110,7 +134,8 @@ Amrutha Sree
 - 💻 Python & Flask Developer
 - 👩‍💼 IEEE IAS WIE Coordinator
 - 🚀 Project Intern @ K-DISC
-
+LinkedIn:
+www.linkedin.com/in/amrutha-sree24
 
 ⭐ Support
 
